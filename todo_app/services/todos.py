@@ -1,38 +1,46 @@
-from fastapi import Depends, HTTPException, status
-from sqlalchemy.orm import Session
-from database import get_session
-from models.todos import TODOCreate, TODOUpdate
-from tables import TODO
+from fastapi import HTTPException
+from models import Todo
+from schemas import TodoCreateModel, TodoUpdateModel
+from .users import UserService
 
 
-class TodosService():
-    def __init__(self, session: Session = Depends(get_session)):
-        self.session = session
+class TodoService():
+    @staticmethod
+    async def get_all() -> list[Todo]:
+        return await Todo.all()
 
-    def get_all(self) -> list[TODO]:
-        todos = self.session.query(TODO).all()
-        return todos
-
-    def get(self, todo_id: int) -> TODO:
-        todo = self.session.query(TODO).get(todo_id)
-        if not todo:
-            raise HTTPException(status.HTTP_404_NOT_FOUND)
+    @staticmethod
+    async def get(todo_id: int, get_query: bool = False) -> Todo:
+        todo = Todo.filter(id=todo_id)
+        if not get_query:
+            todo = await todo.first()
+        todo_exists_query = await todo.exists() if get_query else True
+        if not todo or not todo_exists_query:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Todo with id {todo_id} not found"
+            )
         return todo
 
-    def create(self, todo_data: TODOCreate) -> TODO:
-        todo = TODO(**todo_data.dict())
-        self.session.add(todo)
-        self.session.commit()
-        return todo
+    @staticmethod
+    async def create(todo_data: TodoCreateModel) -> Todo:
+        user_exists = await UserService.exists(todo_data.owner_id)
+        if not user_exists:
+            raise HTTPException(
+                status_code=404,
+                detail=f"User with id {todo_data.owner_id} not found"
+            )
+        return await Todo.create(**todo_data.dict())
 
-    def update(self, todo_id: int, todo_data: TODOUpdate) -> TODO:
-        todo = self.get(todo_id)
-        for key, value in todo_data:
-            setattr(todo, key, value)
-        self.session.commit()
-        return todo
+    @staticmethod
+    async def update(todo_id: int, todo_data: TodoUpdateModel) -> Todo:
+        todo = await TodoService.get(todo_id, get_query=True)
+        await todo.update(**todo_data.dict(exclude_unset=True))
+        return await todo.first()
 
-    def delete(self, todo_id: int) -> None:
-        todo = self.get(todo_id)
-        self.session.delete(todo)
-        self.session.commit()
+    @staticmethod
+    async def delete(todo_id: int) -> Todo:
+        todo = await TodoService.get(todo_id)
+        todo_query = await TodoService.get(todo_id, get_query=True)
+        await todo_query.delete()
+        return todo

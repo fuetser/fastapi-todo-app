@@ -1,5 +1,6 @@
 fastapi
 pydantic
 uvicorn
-sqlalchemy
+tortoise-orm
+bcrypt
 python-dotenv

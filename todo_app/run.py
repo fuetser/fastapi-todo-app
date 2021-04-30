@@ -7,5 +7,6 @@ if __name__ == '__main__':
         "app:app",
         host=settings.server_host,
         port=settings.server_port,
-        reload=True
+        reload=settings.debug_mode,
+        workers=settings.workers
     )

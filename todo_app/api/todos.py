@@ -1,31 +1,31 @@
-from fastapi import APIRouter, Depends
-from models.todos import TODO, TODOCreate, TODOUpdate
-from services.todos import TodosService
+from fastapi import APIRouter
+from schemas import TodoModel, TodoCreateModel, TodoUpdateModel
+from services import TodoService
 
 
 router = APIRouter(prefix="/todos")
 
 
-@router.get("/", response_model=list[TODO])
-def get_all_todos(service: TodosService = Depends()):
-    return service.get_all()
+@router.get("/", response_model=list[TodoModel])
+async def get_all_todos():
+    return await TodoService.get_all()
 
 
-@router.get("/{todo_id}", response_model=TODO)
-def get_todo_by_id(todo_id: int, service: TodosService = Depends()):
-    return service.get(todo_id)
+@router.get("/{todo_id}", response_model=TodoModel)
+async def get_todo_by_id(todo_id: int):
+    return await TodoService.get(todo_id)
 
 
-@router.post("/", response_model=TODO)
-def create_todo(data: TODOCreate, service: TodosService = Depends()):
-    return service.create(data)
+@router.post("/", response_model=TodoModel)
+async def create_todo(data: TodoCreateModel):
+    return await TodoService.create(data)
 
 
-@router.put("/{todo_id}", response_model=TODO)
-def update_todo(todo_id: int, data: TODOUpdate, service: TodosService = Depends()):
-    return service.update(todo_id, data)
+@router.put("/{todo_id}", response_model=TodoModel)
+async def update_todo(todo_id: int, data: TodoUpdateModel):
+    return await TodoService.update(todo_id, data)
 
 
-@router.delete("/{todo_id}", response_model=TODO)
-def delete_todo(todo_id: int, service: TodosService = Depends()):
-    return service.delete(todo_id)
+@router.delete("/{todo_id}", response_model=TodoModel)
+async def delete_todo(todo_id: int):
+    return await TodoService.delete(todo_id)
