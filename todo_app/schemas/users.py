@@ -17,7 +17,7 @@ class UserCreateModel(UserBaseModel):
     pass
 
 
-class UserUpdateModel(UserBaseModel):
+class UserUpdateModel(BaseModel):
     username: Optional[constr(max_length=32, min_length=1)]
     password: Optional[constr(max_length=256, min_length=8)]
 

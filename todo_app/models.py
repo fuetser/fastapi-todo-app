@@ -8,6 +8,9 @@ class User(Model):
     password = fields.CharField(max_length=256)
     created_at = fields.DatetimeField(auto_now_add=True)
 
+    class PydanticMeta:
+        exclude = ("password",)
+
 
 class Todo(Model):
     id = fields.IntField(pk=True)
