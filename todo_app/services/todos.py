@@ -1,6 +1,6 @@
 from fastapi import HTTPException
-from models import Todo
-from schemas import TodoModel, TodoCreateModel, TodoUpdateModel, UserModel
+from ..models import Todo
+from ..schemas import TodoModel, TodoCreateModel, TodoUpdateModel, UserModel
 
 
 class TodoService():

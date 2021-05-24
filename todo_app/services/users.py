@@ -5,9 +5,9 @@ import bcrypt
 from fastapi.security import OAuth2PasswordBearer
 from fastapi import HTTPException, Depends
 from jose import JWTError, jwt
-from models import User
-from schemas import UserModel, UserCreateModel, UserUpdateModel
-from settings import settings
+from ..models import User
+from ..schemas import UserModel, UserCreateModel, UserUpdateModel
+from ..settings import settings
 from tortoise.queryset import QuerySet
 
 

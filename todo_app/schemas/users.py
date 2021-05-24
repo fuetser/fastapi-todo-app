@@ -2,7 +2,7 @@ from typing import Optional
 from pydantic import BaseModel, constr
 from tortoise.contrib.pydantic import pydantic_model_creator
 from tortoise import Tortoise
-from models import User
+from ..models import User
 
 
 class UserBaseModel(BaseModel):
@@ -25,5 +25,5 @@ class UserUpdateModel(BaseModel):
         extra = "forbid"
 
 
-Tortoise.init_models(["models"], "models")
+Tortoise.init_models(["todo_app.models"], "models")
 UserModel = pydantic_model_creator(User)

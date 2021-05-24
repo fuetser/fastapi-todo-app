@@ -1,1 +1,1 @@
-web: uvicorn app:app -w 4
+web: uvicorn app:app --workers 4

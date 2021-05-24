@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
-from schemas import TodoModel, TodoCreateModel, TodoUpdateModel, UserModel
-from services import TodoService, UserService
+from ..schemas import TodoModel, TodoCreateModel, TodoUpdateModel, UserModel
+from ..services import TodoService, UserService
 
 
 router = APIRouter(prefix="/todos")
