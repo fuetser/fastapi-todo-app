@@ -43,6 +43,10 @@ class UserService():
         return user
 
     @staticmethod
+    async def get(user_id: int, get_query: bool = False) -> User:
+        return await UserService._get(user_id, GetUserBy.id, get_query)
+
+    @staticmethod
     async def get_by_username(username: str) -> User:
         return await UserService._get(username, get_by=GetUserBy.username)
 
