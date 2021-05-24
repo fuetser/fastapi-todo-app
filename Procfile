@@ -1,1 +1,1 @@
-web: uvicorn app:app --workers 4
+web: uvicorn todo_app:app --workers 4
