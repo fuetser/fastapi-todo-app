@@ -6,6 +6,7 @@ from .settings import settings
 
 app = FastAPI()
 app.include_router(router)
+print(settings.db_url)
 
 
 register_tortoise(
