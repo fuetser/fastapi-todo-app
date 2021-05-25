@@ -5,7 +5,7 @@ from pydantic import BaseSettings
 class Settings(BaseSettings):
     server_host: str = "localhost"
     server_port: int = 8000
-    db_url: str = os.environ.get("DATABSE_URL")
+    db_url: str = os.environ.get("DATABASE_URL")
     secret_key: str = os.environ.get("SECRET_KEY")
     reload: bool = True
     workers: int = 4

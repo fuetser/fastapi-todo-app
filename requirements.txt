@@ -1,6 +1,7 @@
 fastapi
 pydantic
 uvicorn
+asyncpg
 tortoise-orm[asyncpg]
 bcrypt
 python-dotenv
