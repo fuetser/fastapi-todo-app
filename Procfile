@@ -1,1 +1,1 @@
-web: uvicorn todo_app:app --port $PORT
+web: uvicorn todo_app:app --workers 1 --port $PORT
